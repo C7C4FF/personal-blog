@@ -1,5 +1,5 @@
 ---
 layout: category
-category: Machine Learning
+category: machine learning
 background: '/img/bg-color.png'
 ---
