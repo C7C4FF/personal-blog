@@ -1,5 +1,5 @@
 ---
 layout: category
-category: Programming
+category: programming
 background: '/img/bg-color.png'
 ---
