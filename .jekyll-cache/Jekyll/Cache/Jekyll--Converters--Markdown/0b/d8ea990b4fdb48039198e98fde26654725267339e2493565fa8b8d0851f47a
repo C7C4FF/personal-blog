@@ -1,0 +1,93 @@
+I"�=<h1 id="0613">0613</h1>
+
+<p>진행 중… 리스트로 받아오기</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />cast 에서 “출연 : “ 을 기점으로 분리하기</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />DataFrame으로 잘 출력 되게 하기</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />해결 ^^7</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">Chrome</span><span class="p">(</span><span class="s">'/Users/beom/Documents/chromedriver'</span><span class="p">)</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"http://www.playdb.co.kr/playdb/playdblist.asp?sReqMainCategory=000001&amp;sReqSubCategory=&amp;sReqDistrict=&amp;sReqTab=2&amp;sPlayType=1&amp;sStartYear=2019&amp;sSelectType=3"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">page</span><span class="p">(</span><span class="n">pagevalue</span><span class="p">):</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s">'//*[@id="contents"]/div[2]/table/tbody/tr[11]/td/table/tbody/tr[35]/td/a['</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">pagevalue</span><span class="p">)</span><span class="o">+</span><span class="s">']'</span><span class="p">)</span>
+    <span class="n">pages</span><span class="p">.</span><span class="n">click</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">crawling</span><span class="p">():</span>
+    <span class="n">alist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">):</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s">'//*[@id="contents"]/div[2]/table/tbody/tr[11]/td/table/tbody/tr['</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">+</span><span class="s">']/td/table/tbody/tr/td[1]/table/tbody/tr/td[3]/table/tbody/tr[1]/td/b/font/a'</span><span class="p">)</span>
+        <span class="n">loca</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s">'//*[@id="contents"]/div[2]/table/tbody/tr[11]/td/table/tbody/tr['</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">+</span><span class="s">']/td/table/tbody/tr/td[1]/table/tbody/tr/td[3]/table/tbody/tr[2]/td/a[1]'</span><span class="p">)</span>
+        <span class="n">cast</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s">'//*[@id="contents"]/div[2]/table/tbody/tr[11]/td/table/tbody/tr['</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">+</span><span class="s">']/td/table/tbody/tr/td[1]/table/tbody/tr/td[3]/table/tbody/tr[2]/td'</span><span class="p">)</span>
+        <span class="n">alist</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="n">title</span><span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="n">loca</span><span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="n">cast</span><span class="p">.</span><span class="n">text</span><span class="p">])</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">alist</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">current_url</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">crawling</span><span class="p">()</span>
+    <span class="n">page</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">alist</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'뮤지컬명'</span><span class="p">,</span> <span class="s">'장소'</span><span class="p">,</span> <span class="s">'캐스팅'</span><span class="p">])</span>
+<span class="n">result</span><span class="p">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">result</span><span class="p">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="p">.</span><span class="n">Chrome</span><span class="p">(</span><span class="s">'/Users/kohyerim/Selenium/chromedriver'</span><span class="p">)</span>
+<span class="n">driver</span><span class="p">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="s">"http://www.playdb.co.kr/playdb/playdblist.asp?sReqMainCategory=000001&amp;sReqSubCategory=&amp;sReqDistrict=&amp;sReqTab=2&amp;sPlayType=1&amp;sStartYear=2019&amp;sSelectType=3"</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">page</span><span class="p">(</span><span class="n">pagevalue</span><span class="p">):</span>
+    <span class="n">pages</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span>
+        <span class="s">'//*[@id="contents"]/div[2]/table/tbody/tr[11]/td/table/tbody/tr[35]/td/a['</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pagevalue</span><span class="p">)</span> <span class="o">+</span> <span class="s">']'</span><span class="p">)</span>
+    <span class="n">pages</span><span class="p">.</span><span class="n">click</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">crawling</span><span class="p">():</span>
+    <span class="n">alist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">):</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s">'//*[@id="contents"]/div[2]/table/tbody/tr[11]/td/table/tbody/tr['</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
+            <span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="s">']/td/table/tbody/tr/td[1]/table/tbody/tr/td[3]/table/tbody/tr[1]/td/b/font/a'</span><span class="p">)</span>
+        <span class="n">loca</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s">'//*[@id="contents"]/div[2]/table/tbody/tr[11]/td/table/tbody/tr['</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
+            <span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="s">']/td/table/tbody/tr/td[1]/table/tbody/tr/td[3]/table/tbody/tr[2]/td/a[1]'</span><span class="p">)</span>
+
+				<span class="c1"># 수정한 부분 시작
+</span>        <span class="n">tmp</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">find_element_by_xpath</span><span class="p">(</span><span class="s">'//*[@id="contents"]/div[2]/table/tbody/tr[11]/td/table/tbody/tr['</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span>
+            <span class="n">j</span><span class="p">)</span> <span class="o">+</span> <span class="s">']/td/table/tbody/tr/td[1]/table/tbody/tr/td[3]/table/tbody/tr[2]/td'</span><span class="p">)</span>
+        <span class="n">genre</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">cast</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">staff</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="c1"># split example : ['세부장르 : 창작', '일시 : 2019.07.06 ~ 2019.10.20', '장소 : 대학로 티오엠 1관', '출연 : 정문성, 정동화, 김경수, 주민진, 안유진, 정연, 최연우, 최수진, 김재범, 정민, 에녹, 김종구', 'Staff : 성종완, 김은영']
+</span>        <span class="n">alist</span><span class="p">.</span><span class="n">append</span><span class="p">([</span><span class="n">title</span><span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="n">loca</span><span class="p">.</span><span class="n">text</span><span class="p">,</span> <span class="n">cast</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">alist</span>
+		<span class="c1"># 수정한 부분 끝
+</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">driver</span><span class="p">.</span><span class="n">current_url</span>
+    <span class="n">driver</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">alist</span> <span class="o">=</span> <span class="n">crawling</span><span class="p">()</span>  <span class="c1"># 수정한 부분
+</span>    <span class="n">page</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+
+<span class="c1"># print(alist)
+</span><span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">alist</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">'뮤지컬명'</span><span class="p">,</span> <span class="s">'장소'</span><span class="p">,</span> <span class="s">'캐스팅'</span><span class="p">])</span>
+<span class="n">result</span><span class="p">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">head</span><span class="p">())</span> <span class="c1"># 주피터면 print 굳이 안해도 되는데 저는 파이참으로 해서 걍 print한 것임..
+</span></code></pre></div></div>
+:ET

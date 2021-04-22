@@ -1,0 +1,26 @@
+title:              C7C4FF
+email:              c7c4ff.beom@gmail.com
+description:        Blog for Study
+author:             C7C4FF
+baseurl:            "/blog"
+url:                "https://c7c4ff.github.io"
+
+# Social Profiles
+twitter_username:
+github_username:    C7C4FF
+facebook_username:
+instagram_username:
+linkedin_username:
+
+# Add your google-analytics ID here to activate google analytics
+google_analytics:   UA-XXXXXXXXX-X # out your google-analytics code
+
+# Build settings
+markdown:           kramdown
+hightlighter: rouge
+paginate:           5
+paginate_path:      "/posts/page:num/"
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
+  - jekyll-sitemap ## Uncomment this line to silently generate a sitemaps.org compliant sitemap for your Jekyll site
