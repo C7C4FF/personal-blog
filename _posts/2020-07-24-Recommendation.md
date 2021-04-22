@@ -4,7 +4,7 @@ title: "추천 시스템"
 subtitle: "공부한 내용 정리"
 date: 2020-07-24 13:00:00 +0900
 background: '/img/posts/06.jpg'
-categories: ['Programming', 'Machine Learning']
+categories: ['programming', 'machine learning']
 ---
 
 # Recommendation
