@@ -1,5 +1,5 @@
 ---
 layout: category
-category: Python
+category: python
 background: '/img/bg-color.png'
 ---
